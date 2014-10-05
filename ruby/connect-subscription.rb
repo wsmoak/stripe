@@ -1,7 +1,6 @@
 #! /usr/bin/ruby
 
-# see http://wiki.wsmoak.net/cgi-bin/wiki.pl?StripeCouponLimit
-# an example of storing metadata and checking it later
+# Investigation of subscriptions in Stripe Connect
 
 require "stripe"
 Stripe.api_key = ENV['STRIPE_SECRET_KEY']
