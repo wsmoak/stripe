@@ -35,6 +35,7 @@ plan.delete
 # Or you can do it by using the access token directly as the api key
 
 Stripe.api_key = access_token
+
 plan_id = "gold" + rand(1..10).to_s
 
 Stripe::Plan.create(
