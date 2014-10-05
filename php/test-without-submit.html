@@ -1,0 +1,65 @@
+<html>
+<head>
+  
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <script type="text/javascript" src="jquery-1.11.1.js"></script>
+
+
+</head>
+
+<body>
+  
+  <h1>Stripe.js Example of charging a card without submitting the form</h1>
+ 
+  <form action="none" method="POST" id="payment-form" onsubmit="return onSubmitDo()">
+ 
+        Card Number
+        <input type="text" size="20" data-stripe="number"/>
+ 
+        CVC
+        <input type="text" size="4" data-stripe="cvc"/>
+
+        Expiration (MM/YYYY)
+        <input type="text" size="2" data-stripe="exp-month"/>
+        <input type="text" size="4" data-stripe="exp-year"/>
+       
+        Email Address
+        <input type="text" size = "25" id="emailAddress" name="emailAddress" />
+       
+        <button type="submit">Pay $15 with Stripe</button>
+
+  </form>
+
+  <script type="text/javascript">
+  
+    Stripe.setPublishableKey('pk_test_4ZzD3dUkMiTnVLpwymISz9Uf');
+    
+    function onSubmitDo () {
+      
+      Stripe.card.createToken( document.getElementById('payment-form'), myStripeResponseHandler );
+          
+      return false;
+      
+    };
+
+    function myStripeResponseHandler ( status, response ) {
+    
+      console.log ("token is " + response.id );
+
+         postData = "stripeToken="+response.id+"&emailAddress="+$('#emailAddress').val();
+         $.ajax({
+                 type: "POST",
+                 url: "charge-without-submit.php",
+                 data: postData,
+                 cache: true,
+                 success: function(html){  alert("success!" + html );   }
+               });
+      
+       };
+      
+       </script>
+
+
+</body>
+
+</html>
