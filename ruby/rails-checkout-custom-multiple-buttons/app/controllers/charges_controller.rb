@@ -19,9 +19,12 @@ class ChargesController < ApplicationController
       :currency    => 'usd'
     )
 
-  rescue Stripe::CardError => e
-    flash[:error] = e.message
-    redirect_to charges_path
+    render text: "{abc: 123}"  # send some json back to the ajax call
+
+    rescue Stripe::CardError => e
+      flash[:error] = e.message
+      redirect_to charges_path
+
   end
   
 end

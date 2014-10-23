@@ -1,12 +1,80 @@
 <%= form_tag charges_path do %>
   <article>
-    <label class="amount">
-      <span>Amount: $5.00</span>
+    <label class="info">
+      <span>Testing Stripe Checkout custom integration with multiple buttons</span>
     </label>
   </article>
+  
+  
+  <script src="https://checkout.stripe.com/checkout.js"></script>
 
-  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-          data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-          data-description="A month's subscription"
-          data-amount="500"></script>
-<% end %>
+
+  <button id="customButton1">Purchase1</button>
+  <button id="customButton2">Purchase2</button>
+
+  <script>
+    var handler1 = StripeCheckout.configure({
+      key: 'pk_test_4ZzD3dUkMiTnVLpwymISz9Uf',
+      image: '',
+      token: function(token) {
+        // Use the token to create the charge with a server-side script.
+        // You can access the token ID with `token.id`
+        console.log(token);
+
+        $.ajax({
+          type: "POST",
+          url: "/charges",
+          data: { stripeToken: token.id, stripeEmail: token.email, plan: 'monthly' }
+        })
+        .done(function( msg ) {
+            alert( "Server response: " + msg );
+        });
+
+      }
+    });
+
+    var handler2 = StripeCheckout.configure({
+      key: 'pk_test_4ZzD3dUkMiTnVLpwymISz9Uf',
+      image: '',
+      token: function(token) {
+        // Use the token to create the charge with a server-side script.
+        // You can access the token ID with `token.id`
+        console.log(token);
+
+        $.ajax({
+          type: "POST",
+          url: "/charges",
+          data: { stripeToken: token.id, stripeEmail: token.email, plan: 'lifetime' }
+        })
+        .done(function( msg ) {
+            alert( "Server response: " + msg );
+        });
+
+      }
+    });
+
+
+
+    document.getElementById('customButton1').addEventListener('click', function(e) {
+      // Open Checkout with further options
+      handler1.open({
+        name: 'Demo Site',
+        description: '1 widget ($20.00)',
+        amount: 2000
+      });
+      e.preventDefault();
+    });
+
+    document.getElementById('customButton2').addEventListener('click', function(e) {
+      // Open Checkout with further options
+      handler2.open({
+        name: 'Demo Site',
+        description: '2 gadgets ($50.00)',
+        amount: 2000
+      });
+      e.preventDefault();
+    });
+
+
+  </script>
+  <% end %>
