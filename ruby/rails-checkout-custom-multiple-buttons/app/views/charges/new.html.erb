@@ -9,17 +9,14 @@
   <script src="https://checkout.stripe.com/checkout.js"></script>
 
 
-  <button id="customButton1">Purchase1</button>
-  <button id="customButton2">Purchase2</button>
+  <button id="customButton1">Monthly</button>
+  <button id="customButton2">Lifetime</button>
 
   <script>
     var handler1 = StripeCheckout.configure({
       key: 'pk_test_4ZzD3dUkMiTnVLpwymISz9Uf',
       image: '',
       token: function(token) {
-        // Use the token to create the charge with a server-side script.
-        // You can access the token ID with `token.id`
-        console.log(token);
 
         $.ajax({
           type: "POST",
@@ -37,9 +34,6 @@
       key: 'pk_test_4ZzD3dUkMiTnVLpwymISz9Uf',
       image: '',
       token: function(token) {
-        // Use the token to create the charge with a server-side script.
-        // You can access the token ID with `token.id`
-        console.log(token);
 
         $.ajax({
           type: "POST",
@@ -53,24 +47,20 @@
       }
     });
 
-
-
     document.getElementById('customButton1').addEventListener('click', function(e) {
-      // Open Checkout with further options
       handler1.open({
         name: 'Demo Site',
-        description: '1 widget ($20.00)',
-        amount: 2000
+        description: 'Monthly Subscription',
+        panelLabel: "Subscribe $20/month"
       });
       e.preventDefault();
     });
 
     document.getElementById('customButton2').addEventListener('click', function(e) {
-      // Open Checkout with further options
       handler2.open({
         name: 'Demo Site',
-        description: '2 gadgets ($50.00)',
-        amount: 2000
+        description: 'Lifetime Subscription',
+        amount: 50000
       });
       e.preventDefault();
     });
