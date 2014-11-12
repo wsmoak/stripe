@@ -1,9 +1,14 @@
 <%= form_tag charges_path do %>
   <article>
     <label class="amount">
-      <span>Amount: $5.00</span>
+      <span>Subscribe!</span>
     </label>
   </article>
+  
+  <%= hidden_field_tag 'plan_id', 'BASIC' %>
+  
+  <%= label_tag(:coupon_id, "Coupon code:") %>
+  <%= text_field_tag(:coupon_id) %>
 
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
           data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
