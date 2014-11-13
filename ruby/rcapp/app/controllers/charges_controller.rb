@@ -8,7 +8,7 @@ class ChargesController < ApplicationController
     @amount = 500
 
     customer = Stripe::Customer.create(
-      :email => params[:stripeEmsil],
+      :email => params[:stripeEmail],
       :card  => params[:stripeToken],
       :coupon => params[:coupon_id],
       :plan => params[:plan_id]
