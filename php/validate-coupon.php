@@ -2,7 +2,7 @@
   require_once('./config.php');
 
   $answer = false;
-  $coupon_id  = $_POST['coupon_id'];
+  $coupon_id  = $_GET['coupon_id'];
   
   // needs if coupon_id is not blank  
   try {
