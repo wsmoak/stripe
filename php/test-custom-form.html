@@ -1,4 +1,4 @@
-<html>
+a<html>
 <head>
   
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
@@ -16,7 +16,11 @@
     };
 
     function myStripeResponseHandler ( status, response ) {
+      
+      console.log( status );
+      console.log( response );
     
+      if ( status == 200 ) {
       var tokenInput = document.createElement("input");
       tokenInput.type = "hidden";
       tokenInput.name = "stripeToken";
@@ -26,6 +30,9 @@
       paymentForm.appendChild(tokenInput);
 
       paymentForm.submit();
+    } else {
+      console.log ("Error status " + status  + response.error.code);
+    }
       
        };
       
