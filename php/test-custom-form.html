@@ -1,4 +1,4 @@
-a<html>
+ a<html>
 <head>
   
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
@@ -21,20 +21,20 @@ a<html>
       console.log( response );
     
       if ( status == 200 ) {
-      var tokenInput = document.createElement("input");
-      tokenInput.type = "hidden";
-      tokenInput.name = "stripeToken";
-      tokenInput.value = response.id;
+        var tokenInput = document.createElement("input");
+        tokenInput.type = "hidden";
+        tokenInput.name = "stripeToken";
+        tokenInput.value = response.id;
 
-      var paymentForm = document.getElementById('payment-form');
-      paymentForm.appendChild(tokenInput);
+        var paymentForm = document.getElementById('payment-form');
+        paymentForm.appendChild(tokenInput);
 
-      paymentForm.submit();
-    } else {
-      console.log ("Error status " + status  + response.error.code);
-    }
+        paymentForm.submit();
+      } else {
+        console.log ("Error status " + status  + response.error.code);
+      }
       
-       };
+   };
       
        </script>
 
