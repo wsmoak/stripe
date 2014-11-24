@@ -1,4 +1,4 @@
- a<html>
+<html>
 <head>
   
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
@@ -20,7 +20,9 @@
       console.log( status );
       console.log( response );
     
-      if ( status == 200 ) {
+      if ( response.error ) {
+        document.getElementById('payment-error').innerHTML = response.error.message;
+      } else {
         var tokenInput = document.createElement("input");
         tokenInput.type = "hidden";
         tokenInput.name = "stripeToken";
@@ -30,8 +32,6 @@
         paymentForm.appendChild(tokenInput);
 
         paymentForm.submit();
-      } else {
-        console.log ("Error status " + status  + response.error.code);
       }
       
    };
@@ -65,6 +65,8 @@
         <button type="submit">Pay $15 with Stripe</button>
 
   </form>
+
+  <span style='color: red' id='payment-error'></span>
 
 </body>
 
