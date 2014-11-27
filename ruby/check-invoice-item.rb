@@ -11,7 +11,7 @@ def make_customer
   # simulate token from Stripe.js or Checkout
   token = Stripe::Token.create(
     :card => {
-      :number => "4242424242424242",
+      :number => "4000000000000341",
       :exp_month => 11,
       :exp_year => 2015,
       :cvc => "314"
@@ -35,6 +35,14 @@ def make_invoice_item
       )
 end
 
+def make_subscription
+  $cust.subscriptions.create(:plan => "monthly")
+end
+
+def retrieve_customer
+  $cust = Stripe::Customer.retrieve( $cust.id )
+end
+
 def check_and_make_invoice_item
 
   # retrieve invoice items
@@ -47,12 +55,20 @@ def check_and_make_invoice_item
   items = Stripe::InvoiceItem.all( customer: $cust.id )
   
   # this should always be 1
-  puts "The customer has #{items.data.count} invoice item"
+  puts "The customer has #{items.data.count} invoice item(s)"
     
 end
 
 make_customer
 
-check_and_make_invoice_item
+make_invoice_item # for new customer
 
-check_and_make_invoice_item
+begin
+  make_subscription
+rescue Stripe::CardError => e
+  puts e.json_body[:error][:message]
+end
+
+retrieve_customer
+
+check_and_make_invoice_item # for existing customer
