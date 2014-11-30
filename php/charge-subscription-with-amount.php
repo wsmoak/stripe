@@ -8,29 +8,47 @@
   $amount = $_POST['amount'];
   $recurring = $_POST['recurring'];
 
-  $customer = Stripe_Customer::create(array(
-      'email' => $email,
-      'card'  => $token
-  ));
+  // validate the amount
+
   
   if ( !empty($recurring) ) {
 
-    //is there already a plan?
+    try {
+
+      $plan = Stripe_Plan::retrieve("monthly{$amount}");
     
-    //make a plan if not
+    } catch (Stripe_InvalidRequestError $error) {
+
+      $plan = Stripe_Plan::create(array(
+         "amount" => $amount * 100,
+        "interval" => "month",
+        "name" => "Monthly {$amount}",
+        "currency" => "usd",
+        "id" => "monthly{$amount}")
+      );
+    }
     
-    //subscribe the customer to it    
+      $customer = Stripe_Customer::create(array(
+        'email' => $email,
+        'card'  => $token,
+        'plan' => "monthly{$amount}"
+      ));
 
     echo "<h1>Successful subscription for {$amount}/month!</h1>";    
     
   } else {
 
-  $charge = Stripe_Charge::create(array(
-      'customer' => $customer->id,
-      'amount'   => $amount * 100,
-      'currency' => 'usd',
-      'description' => 'donation, amount supplied by customer'
-  ));
+    $customer = Stripe_Customer::create(array(
+        'email' => $email,
+        'card'  => $token
+    ));
+
+    $charge = Stripe_Charge::create(array(
+        'customer' => $customer->id,
+        'amount'   => $amount * 100,
+        'currency' => 'usd',
+        'description' => 'donation, amount supplied by customer'
+    ));
 
   echo "<h1>Successfully charged {$amount}!zz</h1>";
   
