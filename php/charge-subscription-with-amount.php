@@ -10,6 +10,8 @@
 
   // validate the amount
 
+  $plan_id = "monthly{$amount}";
+  $plan_name = "Monthly {$amount}";
   
   if ( !empty($recurring) ) {
 
@@ -20,18 +22,18 @@
     } catch (Stripe_InvalidRequestError $error) {
 
       $plan = Stripe_Plan::create(array(
-         "amount" => $amount * 100,
+        "amount" => $amount * 100,
         "interval" => "month",
-        "name" => "Monthly {$amount}",
+        "name" => $plan_name,
         "currency" => "usd",
-        "id" => "monthly{$amount}")
+        "id" => $plan_id)
       );
     }
     
       $customer = Stripe_Customer::create(array(
         'email' => $email,
         'card'  => $token,
-        'plan' => "monthly{$amount}"
+        'plan' => $plan_id
       ));
 
     echo "<h1>Successful subscription for {$amount}/month!</h1>";    
@@ -50,7 +52,7 @@
         'description' => 'donation, amount supplied by customer'
     ));
 
-  echo "<h1>Successfully charged {$amount}!zz</h1>";
+  echo "<h1>Successfully charged {$amount}!</h1>";
   
   }
 
