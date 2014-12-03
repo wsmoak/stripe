@@ -1,8 +1,6 @@
 <?php
   require_once('./config.php');
   
-  echo "The POST is $_POST";
-  
   var_dump($_POST);
 
   $state = $_POST['shippingState'];
